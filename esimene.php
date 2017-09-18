@@ -2,21 +2,28 @@
 	//Muutujad
 	$myName = "Markus";
 	$myFamilyName = "Heinsalu";
-	$practiceStarted = "2017-09-11 8.15";
+	//$practiceStarted = "2017-09-11 8.15"
+	$practiceStarted = date("d.m.Y") ." " ."8.15";
+	$programName = "Notepad++";
+	$programVersion = "7.5.1";
+	$myemail = "markus.heinsalu@tlu.ee";
 	
 	//echo strtotime($practiceStarted);
 	//echo strtotime("now");
-	//$timePassed = strtotime("now") - strtotime($practiceStarted);
-	//echo $timePassed;
+	$timePassed = round((strtotime("now") - strtotime($practiceStarted)) / 60);
+	echo $timePassed;
 	
 	$hourNow = date("H");
 	$partOfDay = "";
 	
 	if ($hourNow < 8){
-	$partOfDay = "Varane hommik.";
+		$partOfDay = "Varane hommik";
 	}
-	if ($hourNow >= 8){
-	$partOfDay = "koolipäev.";
+	if ($hourNow >= 8 and $hourNow < 16){
+		$partOfDay = "koolipäev";
+	}
+	if ($hourNow > 16){
+		$partOfDay = "vaba aeg";
 	}
 ?>
 
@@ -48,5 +55,16 @@
 		$myFamilyName .".</p>"; 
 		
 	?>
+	
+	<?php
+		echo "<p>Autor kasutab lehe töötlemiseks programmi: " .$programName ." " .
+		$programVersion .".</p>";
+	?>
+	
+	<?php
+		echo "<p> Kui lehe avamisel esineb probleeme, siis kirjutada saidi loojale: " .$myemail ." " .
+		$myName .".</p>";
+	?>
+	
 </body>
 </html>
