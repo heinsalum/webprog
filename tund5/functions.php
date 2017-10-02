@@ -21,16 +21,16 @@
 				$notice = "Logisite sisse!";
 				
 				//Määran sessiooni muutujad
-				$_SESSION["uderId"] = $id;
+				$_SESSION["userId"] = $id;
 				$_SESSION["userEmail"] = $emailFromDb;
 				
 				//liigume edasi pealehele
 				header("Location: main.php");
 				exit();
+				
 				} else {
 					$notice = "vale salasõna!";
-				
-			}
+				}
 		
 		} else {
 			$notice = 'Sellise kasutajatunnusega "' .$email .'"

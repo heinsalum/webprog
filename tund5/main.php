@@ -31,7 +31,7 @@
 			array_push($picFiles, $file);
 		}
 	} //foreach lõpp
-	var_dump($picFiles);
+	//var_dump($picFiles);
 	
 	// Mitu pilti on?
 	$fileCount = count($picFiles);
