@@ -1,0 +1,94 @@
+1. Koostasin tabeli maailma kiireimatest autodest.
+Kasutasin tabeli moodustamiseks käsku:
+
+CREATE TABLE Autod(
+  mudel VARCHAR(30) PRIMARY KEY,
+  hobujoud VARCHAR(30)
+  aastaarv INT
+  poordemoment INT
+);
+
+Tabeli täitmiseks kasutasin järgnevat käsku:
+
+INSERT INTO Autod VALUES ('Bugatti Chiron 8.0 W16', '1479bhp', '2016', '6700')
+
++---------------------------+----------+----------+--------------+
+| mudel                     | hobujoud | aastaarv | poordemoment |
++---------------------------+----------+----------+--------------+
+| Bugatti Chiron 8.0 W16    | 1479bhp  |     2016 |         6700 |
+| Bugatti Veyron 16.4 GSV   | 1184bhp  |     2012 |         6400 |
+| Bugatti Veyron 8.0 W16 SS | 1184bhp  |     2010 |         6400 |
+| Koenigsegg Agera 5L V8    | 1100bhp  |     2011 |         2700 |
+| Koenigsegg Agera R 5.0    | 1124bhp  |     2012 |         7100 |
+| Porsche 9FF GT9R          | 1120bhp  |     2009 |         7850 |
+| SSC Tuatara 6.9L V8       | 1350bhp  |     2011 |         6800 |
+| SSC Ultimate Aero TT      | 1183bhp  |     2008 |         6950 |
+| Zenvo STI 7.0 V8          | 1233bhp  |     2011 |         6900 |
+| Zenvo TS1 GT 5.8 V8       | 1163bhp  |     2017 |         7700 |
++---------------------------+----------+----------+--------------+
+
+2. Filtreerimiseks kasutasin järgnevaid käske: 
+
+Järjestamine:
+SELECT * FROM Autod ORDER BY hobujoud/mudel/aastaarv/pöördemoment;
+
++---------------------------+----------+----------+--------------+
+| mudel                     | hobujoud | aastaarv | poordemoment |
++---------------------------+----------+----------+--------------+
+| Koenigsegg Agera 5L V8    | 1100bhp  |     2011 |         2700 |
+| Porsche 9FF GT9R          | 1120bhp  |     2009 |         7850 |
+| Koenigsegg Agera R 5.0    | 1124bhp  |     2012 |         7100 |
+| Zenvo TS1 GT 5.8 V8       | 1163bhp  |     2017 |         7700 |
+| SSC Ultimate Aero TT      | 1183bhp  |     2008 |         6950 |
+| Bugatti Veyron 8.0 W16 SS | 1184bhp  |     2010 |         6400 |
+| Bugatti Veyron 16.4 GSV   | 1184bhp  |     2012 |         6400 |
+| Zenvo STI 7.0 V8          | 1233bhp  |     2011 |         6900 |
+| SSC Tuatara 6.9L V8       | 1350bhp  |     2011 |         6800 |
+| Bugatti Chiron 8.0 W16    | 1479bhp  |     2016 |         6700 |
++---------------------------+----------+----------+--------------+
+
+
+Valimine mitme kaupa:
+SELECT * FROM Autod WHERE aastaarv='2011';
+
++------------------------+----------+----------+--------------+
+| mudel                  | hobujoud | aastaarv | poordemoment |
++------------------------+----------+----------+--------------+
+| Koenigsegg Agera 5L V8 | 1100bhp  |     2011 |         2700 |
+| SSC Tuatara 6.9L V8    | 1350bhp  |     2011 |         6800 |
+| Zenvo STI 7.0 V8       | 1233bhp  |     2011 |         6900 |
++------------------------+----------+----------+--------------+
+
+Keskmine poordemoment: 6950.0000
+SELECT hobujoud, AVG(poordemoment) FROM Autod GROUP BY hobujoud;
+
++----------+-------------------+
+| hobujoud | AVG(poordemoment) |
++----------+-------------------+
+| 1100bhp  | 2700.0000         |
+| 1120bhp  | 7850.0000         |
+| 1124bhp  | 7100.0000         |
+| 1163bhp  | 7700.0000         |
+| 1183bhp  | 6950.0000         |
+| 1184bhp  | 6400.0000         |
+| 1233bhp  | 6900.0000         |
+| 1350bhp  | 6800.0000         |
+| 1479bhp  | 6700.0000         |
++----------+-------------------+
+
+Keskmine hobujoud: 1122
+
++---------------------------+---------------+
+| mudel                     | AVG(hobujoud) |
++---------------------------+---------------+
+| Bugatti Chiron 8.0 W16    |          1479 |
+| Bugatti Veyron 16.4 GSV   |          1184 |
+| Bugatti Veyron 8.0 W16 SS |          1184 |
+| Koenigsegg Agera 5L V8    |          1100 |
+| Koenigsegg Agera R 5.0    |          1124 |
+| Porsche 9FF GT9R          |          1120 |
+| SSC Tuatara 6.9L V8       |          1350 |
+| SSC Ultimate Aero TT      |          1183 |
+| Zenvo STI 7.0 V8          |          1233 |
+| Zenvo TS1 GT 5.8 V8       |          1163 |
++---------------------------+---------------+

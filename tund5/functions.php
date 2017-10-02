@@ -1,6 +1,37 @@
 <?php
 	$database = "if17_heinmark";
 	
+	//sisselogimise funktsiooni 
+	function signIn($email, $password){
+		$notice = "";
+		//ühenduse loomine serveriga
+		$mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $GLOBALS["database"]);
+		$stmt = $mysqli->prepare("SELECT id, email, password FROM vpusers WHERE email = ?");
+		$stmt->bind_param("s", $email);
+		$stmt->bind_result($id, $emailFromDb, $passwordFromDb);
+		$stmt->execute();
+		
+		//kontrollime vastavust
+		if ($stmt->fetch()){
+			$hash = hash("sha512", $password);
+			if ($hash == $passwordFromDb){
+				$notice = "Logisite sisse!";
+				//liigume edasi pealehele
+				header("Location: main.php");
+				exit();
+				} else {
+					$notice = "vale salasõna!";
+				
+			}
+		
+		} else {
+			$notice = 'Sellise kasutajatunnusega "' .$email .'"
+			pole registreeritud!';
+		}
+		$stmt->close();
+		$mysqli->close();
+		return $notice;
+	}
 	//kasutaja salvestamise funkt.
 	function signUp($signupFirstName, $signupFamilyName, $signupBirthDate, $gender, $signupEmail, $signupPassword){
 		//loome andmebaasiühenduse
@@ -45,6 +76,6 @@
 		echo "Teine summa on: " .($a + $b);
 	}
 	echo "Kolmas summa on: " .($a + $b);
-	/*
+	*/
 	
 ?>
