@@ -3,6 +3,11 @@
 	require("functions.php");
 	//echo $serverHost;
 	
+	//kui sisse loginud, siis kohe main.php lehele
+	if (isset($_SESSION["userId"]));
+		header("Location: main.php");
+		exit();
+	
 	$signupFirstName = "";
 	$signupFamilyName = "";
 	$gender = "";

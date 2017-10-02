@@ -1,4 +1,19 @@
 <?php
+	require("functions.php");
+	
+	//kui pole sisse loginud, siis sisselogimise lehele
+	if (!isset($_SESSION["userId"])){
+		header("Location: login.php");
+		exit();
+	}	
+	
+	//kui logid välja:
+	if (isset($_GET["logout"])){
+		//lõpetame sessiooni
+		session_destroy();
+		header("Location: login.php");
+	}
+
 	$dirToRead = "../../Pics/";
 	// kuna tahan ainult pildifaile, siis filtreerin
 	$picFileTypes = ["jpg", "jpeg", "png", "gif"];
@@ -33,6 +48,8 @@
 <body>
 	<h1>Markus Heinsalu</h1>
 	<p>See veebileht on loodud veebiprogrammeerimise kursusel ning ei sisalda mingisugust tõsiseltvõetavat sisu.</p>
+	<p><a href="?logout=1">Logi välja!</a></p>
+	<p><a href="usersinfo.php">Kasutajate info</a></p>
 	<p>Üks pilt Tallinna Ülikoolist!</p>
 	<img src="<?php echo $dirToRead .$picToShow; ?>" alt="Tallinna Ülikool">
 	

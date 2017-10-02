@@ -1,6 +1,9 @@
 <?php
 	$database = "if17_heinmark";
 	
+	//alustan sessiooni
+	session_start();
+	
 	//sisselogimise funktsiooni 
 	function signIn($email, $password){
 		$notice = "";
@@ -16,6 +19,11 @@
 			$hash = hash("sha512", $password);
 			if ($hash == $passwordFromDb){
 				$notice = "Logisite sisse!";
+				
+				//Määran sessiooni muutujad
+				$_SESSION["uderId"] = $id;
+				$_SESSION["userEmail"] = $emailFromDb;
+				
 				//liigume edasi pealehele
 				header("Location: main.php");
 				exit();
