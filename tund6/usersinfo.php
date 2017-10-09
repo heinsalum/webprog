@@ -31,7 +31,7 @@
 	<h1>Markus Heinsalu</h1>
 	<p>See veebileht on loodud veebiprogrammeerimise kursusel ning ei sisalda mingisugust tõsiseltvõetavat sisu.</p>
 	<p><a href="?logout=1">Logi välja!</a></p>
-	<p><a href="?main.php">Pealeht!</a></p>
+	<p><a href="main.php">Pealeht!</a></p>
 	<hr>
 	<h2>Kõik systeemi kasutajad</h2>
 	<table "border:"1" style="border: 1px solid black; border-collapse: collapse">

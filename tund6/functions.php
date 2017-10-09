@@ -82,7 +82,8 @@
 	function readAllIdeas(){
 		$ideasHTML = "";
 		$mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $GLOBALS["database"]);
-		$stmt = $mysqli->prepare("SELECT idea, ideaColor FROM vpuserideas");
+		$stmt = $mysqli->prepare("SELECT idea, ideaColor FROM vpuserideas WHERE userid = ?");
+		$stmt->bind_param("i", $_SESSION["userId"]);
 		$stmt->bind_result($idea, $color);
 		$stmt->execute();
 		$result = array();//?
@@ -92,6 +93,22 @@
 		return $ideasHTML;
 	}
 	
+	//uusima idee ludemine  
+		function latestIdea(){
+			$ideasHTML = "";
+			$mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $GLOBALS["database"]);
+			$stmt = $mysqli->prepare("SELECT idea FROM vpuserideas WHERE id = (SELECT MAX(id) FROM vpuserideas)");
+			//$stmt = $mysqli->prepare("SET @last_id := MAX(id) FROM vpuserideas");
+			//$stmt->bind_result($last_id);
+			//echo "Viimane index on: " .$last_id;
+			$stmt->bind_result($idea);
+			$stmt->execute();
+			$stmt->fetch();
+			$ideasHTML .= $idea;
+			$stmt->close();
+			$mysqli->close();
+			return $ideasHTML;
+	}
 	
 	//sisestuse kontrollimise funktsioon
 	function test_input($data){
