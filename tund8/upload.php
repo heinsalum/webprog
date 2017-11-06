@@ -1,0 +1,1 @@
+//siia peaks tulema pildi laadija
