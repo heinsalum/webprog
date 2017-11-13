@@ -16,6 +16,15 @@
 		header("Location: login.php");
 	}
 	
+	//liidan klassi
+	require("classes/Photoupload.class.php");
+	//loome onjekti
+	/*$myPhoto = new Photoupload("peidus");
+	echo $myPhoto->publicTest;
+	echo $myPhoto->privateTest;*/
+	//loome objekti(ajutine fail) 
+	//myPhoto = new PhotoUpload($_FILES["fileToUpload"]["tmp_name"], $imageFileType)
+	
 	//Algab foto laadimise osa
 	$target_dir = "../../Pics/";
 	$target_file;
@@ -35,7 +44,7 @@
 			$imageFileType = strtolower(pathinfo(basename($_FILES["fileToUpload"]["name"]))["extension"]);
 			//$target_file = $target.dir . basename($_FILES["fileToUpload"]["name"]);
 			//tekitame failinime koos ajatempliga
-			$target_file = $target_dir .pathinfo(basename($_FILES["fileToUpload"]["name"]))["filename"] ."_" .(microtime(1) * 10000) ."." .$imageFileType;
+			$target_file = "hmv_" .(microtime(1) * 10000) ."." .$imageFileType;
 			//$imageFileType = pathinfo($target_file, PATHINFO_EXTENSION);
 		
 		$check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
@@ -83,15 +92,15 @@
 		} else {
 			
 			//loeme EXIF infot, millal pilt tehti
-			@$exif = exif_read_data($_FILES["fileToUpload"]["tmp_name"], "ANY_TAG", 0, true);
+			/*@$exif = exif_read_data($_FILES["fileToUpload"]["tmp_name"], "ANY_TAG", 0, true);
 			//var_dump($exif);
 			if(!empty($exif["DateTimeOriginal"])){
 				$textToImage = "Pilt tehti: " .$exif["DateTimeOriginal"];
 			} else {
-				$textToImage = "Puudub kuupäev";
+				$textToImage = "Puudub kuupäev";*/
 			}
 			//lähtudes failitüübist loon sobiva pildiobjekti
-			if($imageFileType == "jpg" or  $imageFileType == "jpeg"){
+			/*if($imageFileType == "jpg" or  $imageFileType == "jpeg"){
 				$myTempImage = imagecreatefromjpeg($_FILES["fileToUpload"]["tmp_name"]);
 			}
 			if($imageFileType == "png" or  $imageFileType == "png"){
@@ -99,10 +108,10 @@
 			}
 			if($imageFileType == "gif" or  $imageFileType == "gif"){
 				$myTempImage = imagecreatefromgif($_FILES["fileToUpload"]["tmp_name"]);
-			}
+			}*/
 			//suuruse muutmine
 			//küsime originaalsuurust
-			$imageWidth = imagesx($myTempImage);
+			/*$imageWidth = imagesx($myTempImage);
 			$imageHeight = imagesy($myTempImage);
 			$sizeRatio = 1;
 			if($imageWidth > $imageHeight){
@@ -110,46 +119,58 @@
 			} else {
 				$sizeRatio = $imageHeight / $maxHeight;
 			}
-			$myImage = resize_image($myTempImage, $imageWidth, $imageHeight, round($imageWidth / $sizeRatio), round($imageHeight / $sizeRatio));
+			$myImage = resize_image($myTempImage, $imageWidth, $imageHeight, round($imageWidth / $sizeRatio), round($imageHeight / $sizeRatio));*/
 			
 			//vesimärgi lisamine
-			$stamp = imagecreatefrompng("../../graphics/hmv_logo.png");
+			/*$stamp = imagecreatefrompng("../../graphics/hmv_logo.png");
 			$stampWidth = imagesx($stamp);
 			$stampHeight = imagesy($stamp);
 			$stampPosX = round($imageWidth / $sizeRatio) - $stampWidth - $marginRight;
 			$stampPosY = round($imageHeight / $sizeRatio) -$stampHeight - $marginBottom;
-			imageCopy($myImage, $stamp, $stampPosX, $stampPosY, 0, 0, $stampWidth, $stampHeight);
+			imageCopy($myImage, $stamp, $stampPosX, $stampPosY, 0, 0, $stampWidth, $stampHeight);*/
 			
 			//tekst vesimärgile
 			//imagecolorallocate
-			$textColor = imagecolorallocatealpha($myImage, 150, 150, 150, 50);
+			/*$textColor = imagecolorallocatealpha($myImage, 150, 150, 150, 50);
 			//RGBA alpha 0 -127
-			imagettftext($myImage, 20, 0, 10, 25, $textColor, "../../graphics/ARIAL.TTF", $textToImage);
+			imagettftext($myImage, 20, 0, 10, 25, $textColor, "../../graphics/ARIAL.TTF", $textToImage);*/
 			
 			//salvestame pildi
-			if($imageFileType == "jpg" or $imageFileType == "jpeg"){
+			/*if($imageFileType == "jpg" or $imageFileType == "jpeg"){
 				if(imagejpeg($myImage, $target_file, 95)){
 					$notice = "Fail: " . basename( $_FILES["fileToUpload"]["name"]). " laeti üles!";
 				} else { 
 					$notice = "Faili ei laetud";
 				}
-			}
+			}*/
 			
 			//mälu vabastamine
-			imagedestroy($myImage);
+			/*imagedestroy($myImage);
 			imagedestroy($myTempImage);
+			imagedestroy($stamp);*/
+
+			//kasutan klassi
+			$myPhoto = new Photoupload($_FILES["fileToUpload"]["tmp_name"], $imageFileType);
+			$myPhoto->readExif();
+			$myPhoto->resizeImage($maxWidth, $maxHeight);
+			$myPhoto->addWatermark();
+			$myPhoto->addTextWatermark("hmv_foto");
+			$myPhoto->savePhoto($target_dir, $target_file);
+			$myPhoto->clearImages();
+			//unset($myPhoto);
+			
 		}
 		
 		} else {
 			$notice= "Palun valige kõigepealt pildifail";
-		}//kas üldse mõni fail valiti
-	}//kas vajutati submit nuppu
+	}	//kas üldse mõni fail valiti
+		//kas vajutati submit nuppu
 	
-	function resize_image($image, $origW, $origH, $w, $h){
+		/*function resize_image($image, $origW, $origH, $w, $h)
 		$dst = imagecreatetruecolor($w, $h);
 		imagecopyresampled($dst, $image, 0, 0, 0, 0, $w, $h, $origW, $origH);
-		return $dst;
-	}
+		return $dst;*/
+	
 	require("header.php");
 ?>
 
