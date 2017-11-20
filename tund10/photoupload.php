@@ -63,10 +63,10 @@
 		$uploadOk = 0;
 	}
 	//Piirame faili suuruse
-	if ($_FILES["fileToUpload"]["size"] > 1000000) {
+	/*if ($_FILES["fileToUpload"]["size"] > 1000000) {
 		$notice .= "Pilt on liiga suur! ";
 		$uploadOk = 0;
-	}
+	}*/
 	
 	//Piirame failitüüpe
 	if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif" ) {
@@ -192,7 +192,7 @@
 	<form action="photoupload.php" method="post" enctype="multipart/form-data">
 		<label>Valige pildifail:</label>
 		<input type="file" name="fileToUpload" id="fileToUpload">
-		<input type="submit" value="Lae üles" name="submit">
+		<input type="submit" value="Lae üles" name="submit" id="submitPhoto">
 	</form>
 	
 	<span><?php echo $notice; ?></span>
@@ -200,5 +200,7 @@
 </html>
 
 <?php
+	echo '<script type="text/javascript"
+	src="javascript/chechFileSize.js"></script>';
 	require("footer.php");
 ?>

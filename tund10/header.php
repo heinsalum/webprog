@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<title>
-		Markus Heinsalu veebiprogemise asjad
+		<?php echo $_SESSION["firstname"] ." " .$_SESSION["lastname"]; ?>
 	</title>
 </head>
 <body>
